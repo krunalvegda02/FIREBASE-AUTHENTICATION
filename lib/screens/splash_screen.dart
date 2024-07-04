@@ -1,37 +1,35 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:project_one/screens/login_screen.dart';
+import 'package:login1/Authentication/Email/login_screen.dart';
+import 'package:login1/screens/postScreen.dart';
+import 'package:lottie/lottie.dart';
 
-class Splashscreen extends StatefulWidget {
-  const Splashscreen({super.key});
 
-  @override
-  State<Splashscreen> createState() => _SplashscreenState();
-}
+class SplashScreen extends StatelessWidget {
+  SplashScreen({super.key});
 
-class _SplashscreenState extends State<Splashscreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    Timer(Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LoginScreen(),
-          ));
-    });
-  }
+  final _auth = FirebaseAuth.instance;
+  // final user = _auth.currentUser;
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-        body: Center(
-      child: Text(
-        "welcome to login..",
-        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-      ),
-    ));
+    return AnimatedSplashScreen(
+        splash: Column(
+          children: [
+            Lottie.asset(
+              'assets/animation/anm.json',
+            ),
+            const Text(
+              "Welcome to login..",
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            )
+          ],
+        ),
+        nextScreen: (_auth.currentUser != null)
+            ? const Postscreen()
+            : const LoginScreen(),
+        duration: 2500,
+        splashIconSize: 400);
   }
 }
